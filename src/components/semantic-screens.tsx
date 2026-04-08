@@ -445,20 +445,20 @@ function NewOrderFormScreen() {
       <div className="space-y-6">
         <div className="flex items-center justify-center gap-8 rounded-[28px] bg-white p-6 ambient-shadow">
           {[
-            ["Clinical Data", true],
-            ["Test Selection", true],
-            ["Patient Selection", false],
+            { label: "Clinical Data", active: true },
+            { label: "Test Selection", active: true },
+            { label: "Patient Selection", active: false },
           ].map((step, index) => (
-            <div key={step[0]} className="flex items-center gap-5">
+            <div key={step.label} className="flex items-center gap-5">
               <div className="text-center">
                 <div
                   className={`mx-auto flex size-12 items-center justify-center rounded-2xl ${
-                    step[1] ? "teal-gradient text-white" : "bg-muted text-slate-500"
+                    step.active ? "teal-gradient text-white" : "bg-muted text-slate-500"
                   }`}
                 >
                   {index === 0 ? <FileText className="size-5" /> : index === 1 ? <FlaskConical className="size-5" /> : <User className="size-5" />}
                 </div>
-                <p className="mt-3 text-sm font-bold text-foreground">{step[0]}</p>
+                <p className="mt-3 text-sm font-bold text-foreground">{step.label}</p>
               </div>
               {index < 2 ? <div className="hidden h-0.5 w-24 bg-primary/35 sm:block" /> : null}
             </div>
@@ -568,13 +568,13 @@ function SampleRegistrationScreen() {
               <CardContent className="space-y-5 p-6">
                 <h4 className="text-lg font-extrabold">مسار العينة</h4>
                 {[
-                  ["إنشاء طلب الفحص", true],
-                  ["تسجيل واستلام العينة", true],
-                  ["بدء التحليل المخبري", false],
+                  { label: "إنشاء طلب الفحص", active: true },
+                  { label: "تسجيل واستلام العينة", active: true },
+                  { label: "بدء التحليل المخبري", active: false },
                 ].map((step) => (
-                  <div key={step[0]} className="flex items-center gap-3">
-                    <span className={`size-4 rounded-full ${step[1] ? "bg-primary" : "bg-slate-300"}`} />
-                    <span className="text-sm font-semibold text-slate-600">{step[0]}</span>
+                  <div key={step.label} className="flex items-center gap-3">
+                    <span className={`size-4 rounded-full ${step.active ? "bg-primary" : "bg-slate-300"}`} />
+                    <span className="text-sm font-semibold text-slate-600">{step.label}</span>
                   </div>
                 ))}
               </CardContent>
