@@ -1,65 +1,162 @@
-import Image from "next/image";
+import Link from "next/link";
+import {
+  ArrowLeft,
+  BadgeCheck,
+  Bot,
+  LayoutDashboard,
+  Microscope,
+  ShieldCheck,
+} from "lucide-react";
+import { FormPanel } from "@/components/form-panel";
+import { ScreenCard } from "@/components/screen-card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { screenService } from "@/services/screen-service";
 
-export default function Home() {
+export default function HomePage() {
+  const screens = screenService.getAll();
+  const featuredScreens = screenService.getFeatured();
+  const categories = screenService.getCategories();
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="min-h-screen px-4 py-6 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-[1600px] flex-col gap-6">
+        <section className="grid gap-6 xl:grid-cols-[1.5fr_0.9fr]">
+          <Card className="overflow-hidden bg-card/90">
+            <CardContent className="p-6 sm:p-8">
+              <div className="inline-flex items-center gap-2 rounded-full bg-accent/60 px-3 py-1 text-xs font-semibold text-accent-foreground">
+                <ShieldCheck className="size-3.5" />
+                Ready for Vercel
+              </div>
+
+              <h1 className="mt-5 text-3xl font-extrabold leading-tight text-foreground sm:text-5xl">
+                Clinical Nexus
+                <span className="mt-2 block text-primary">مرجع بصري كامل لشاشات LIMS</span>
+              </h1>
+
+              <p className="mt-5 max-w-3xl text-sm leading-8 text-muted-foreground sm:text-base">
+                المشروع مبني بـ Next.js App Router وTypeScript وTailwind، ويعرض كل
+                الشاشات المرجعية العربية داخل راوتر موحد مع دعم RTL، بالإضافة إلى
+                نماذج تفاعل خفيفة للتحقق من الحقول والتنقل بين الشاشات.
+              </p>
+
+              <div className="mt-6 grid gap-3 sm:grid-cols-3">
+                <MetricCard
+                  icon={LayoutDashboard}
+                  label="إجمالي الشاشات"
+                  value={`${screens.length}`}
+                />
+                <MetricCard
+                  icon={Microscope}
+                  label="واجهات تشخيصية"
+                  value={`${screens.filter((screen) => screen.category === "التشخيص").length}`}
+                />
+                <MetricCard
+                  icon={Bot}
+                  label="شاشات بنماذج"
+                  value={`${screens.filter((screen) => screen.hasForm).length}`}
+                />
+              </div>
+
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link href="/screens/splash_screen">
+                  <Button size="lg">
+                    ابدأ العرض
+                    <ArrowLeft className="size-4" />
+                  </Button>
+                </Link>
+                <Link href="/screens/patient_portal_login">
+                  <Button size="lg" variant="secondary">
+                    فتح شاشة الدخول
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+
+          <FormPanel />
+        </section>
+
+        <section className="space-y-4">
+          <div>
+            <p className="text-xs font-semibold text-primary">Featured</p>
+            <h2 className="mt-1 text-2xl font-extrabold text-foreground">
+              لقطات رئيسية من النظام
+            </h2>
+          </div>
+          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+            {featuredScreens.map((screen) => (
+              <ScreenCard key={screen.slug} screen={screen} />
+            ))}
+          </div>
+        </section>
+
+        {categories.map((category) => (
+          <section key={category.key} className="space-y-4">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <p className="text-xs font-semibold text-primary">{category.key}</p>
+                <h2 className="mt-1 text-2xl font-extrabold text-foreground">
+                  {category.label}
+                </h2>
+              </div>
+              <div className="rounded-full bg-card px-4 py-2 text-sm font-semibold text-muted-foreground ambient-shadow">
+                {category.screens.length} شاشة
+              </div>
+            </div>
+
+            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+              {category.screens.map((screen) => (
+                <ScreenCard key={screen.slug} screen={screen} />
+              ))}
+            </div>
+          </section>
+        ))}
+
+        <Card className="bg-card/90">
+          <CardContent className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-xs font-semibold text-primary">Run Notes</p>
+              <h2 className="mt-1 text-xl font-extrabold text-foreground">
+                جاهز للتشغيل والنشر
+              </h2>
+              <p className="mt-2 text-sm leading-7 text-muted-foreground">
+                شغّل <code className="font-latin">npm run dev</code> للتطوير المحلي و
+                <code className="font-latin"> npm run build</code> للتحقق النهائي قبل
+                النشر على Vercel.
+              </p>
+            </div>
+            <div className="inline-flex items-center gap-2 rounded-2xl bg-accent/60 px-4 py-3 text-sm font-semibold text-accent-foreground">
+              <BadgeCheck className="size-4" />
+              Build-safe mock prototype
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </main>
+  );
+}
+
+function MetricCard({
+  icon: Icon,
+  label,
+  value,
+}: {
+  icon: typeof LayoutDashboard;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="rounded-[24px] bg-muted/90 p-4">
+      <div className="flex items-center gap-3">
+        <div className="flex size-11 items-center justify-center rounded-2xl bg-card text-primary ambient-shadow">
+          <Icon className="size-5" />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div>
+          <p className="text-xs font-semibold text-muted-foreground">{label}</p>
+          <p className="font-latin text-2xl font-extrabold text-foreground">{value}</p>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

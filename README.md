@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Clinical Nexus
 
-## Getting Started
+تطبيق Next.js عربي RTL يعرض شاشات نظام LIMS المرجعية داخل راوتر موحد، مع نماذج تفاعل أساسية وتجهيز كامل للنشر على Vercel.
 
-First, run the development server:
+## Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Next.js App Router
+- TypeScript
+- Tailwind CSS
+- shadcn/ui structure
+- lucide-react
+
+## Structure
+
+```text
+src/
+  app/
+    page.tsx
+    screens/[slug]/page.tsx
+  components/
+    form-panel.tsx
+    screen-card.tsx
+    screen-viewer.tsx
+    ui/
+  lib/
+    screens.ts
+    utils.ts
+public/
+  designs/
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Run
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+ثم افتح:
 
-## Learn More
+```text
+http://localhost:3000
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Build Check
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run build
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deploy to Vercel
 
-## Deploy on Vercel
+1. ارفع المشروع إلى GitHub.
+2. اربطه مع Vercel.
+3. اختر Framework = `Next.js`.
+4. اترك إعدادات build الافتراضية:
+   - Build Command: `npm run build`
+   - Output: `.next`
+5. نفّذ Deploy.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Notes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- الشاشات المرجعية مضافة داخل `public/designs` وتُعرض كما هي.
+- تم إضافة طبقة نماذج تفاعلية خفيفة للتحقق من الحقول على الواجهة فقط.
+- في حال الرغبة بتحويل كل شاشة من صورة مرجعية إلى مكونات واجهة كاملة 100% semantic، يلزم تنفيذ يدوي لكل شاشة على حدة فوق نفس التصميم المرجعي.
