@@ -6,11 +6,13 @@ import {
   ClipboardList,
   FileText,
   FlaskConical,
+  MessageSquare,
   LayoutDashboard,
   Plus,
   Search,
   Settings,
   ShieldCheck,
+  SlidersHorizontal,
   TestTube2,
   User,
 } from "lucide-react";
@@ -27,6 +29,16 @@ const semanticScreenSlugs = new Set([
   "orders_management",
   "new_order_form",
   "sample_registration",
+  "enhanced_results_entry_with_voice_search",
+  "enhanced_results_approval",
+  "clinical_collaboration",
+  "ai_diagnostic_hub",
+  "enhanced_sample_rejection_with_voice_search",
+  "enhanced_qc_dashboard",
+  "patient_profile",
+  "fast_search_patients_list",
+  "test_catalog",
+  "inventory_reagents",
 ]);
 
 export function hasSemanticScreen(slug: string) {
@@ -49,6 +61,26 @@ export function SemanticScreen({ screen }: { screen: Screen }) {
       return <NewOrderFormScreen />;
     case "sample_registration":
       return <SampleRegistrationScreen />;
+    case "enhanced_results_entry_with_voice_search":
+      return <ResultsEntryScreen />;
+    case "enhanced_results_approval":
+      return <ResultsApprovalScreen />;
+    case "clinical_collaboration":
+      return <ClinicalCollaborationScreen />;
+    case "ai_diagnostic_hub":
+      return <AiDiagnosticHubScreen />;
+    case "enhanced_sample_rejection_with_voice_search":
+      return <SampleRejectionScreen />;
+    case "enhanced_qc_dashboard":
+      return <QualityControlScreen />;
+    case "patient_profile":
+      return <PatientProfileScreen />;
+    case "fast_search_patients_list":
+      return <PatientsListScreen />;
+    case "test_catalog":
+      return <TestCatalogScreen />;
+    case "inventory_reagents":
+      return <InventoryScreen />;
     default:
       return null;
   }
@@ -658,6 +690,393 @@ function SampleRegistrationScreen() {
   );
 }
 
+function ResultsEntryScreen() {
+  return (
+    <AppFrame brand="سينابس" profile="د. أحمد المحمدي" sideTitle="إدخال النتائج">
+      <div className="grid gap-6 xl:grid-cols-[1.15fr_0.72fr]">
+        <div className="space-y-5">
+          <Card>
+            <CardContent className="space-y-5 p-8">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <h1 className="text-4xl font-extrabold">إدخال النتائج المخبرية</h1>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    كيمياء حيوية - إدخال النتائج والتحقق من القيم الحرجة
+                  </p>
+                </div>
+                <StatusPill tone="green">24 مهمة نشطة</StatusPill>
+              </div>
+
+              <div className="rounded-[28px] bg-muted/60 p-6">
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="text-3xl font-extrabold">أحمد محمود حسين</p>
+                    <p className="mt-2 font-mono text-sm text-slate-500">MRN 2026-00451</p>
+                  </div>
+                  <div className="flex size-14 items-center justify-center rounded-2xl bg-accent text-primary">
+                    <User className="size-6" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="overflow-hidden rounded-[28px] bg-white">
+                <div className="grid grid-cols-[0.9fr_0.8fr_0.8fr_0.9fr_0.85fr_1.15fr] gap-4 border-b border-border/60 px-6 py-4 text-sm font-bold text-slate-500">
+                  <span>الحالة</span>
+                  <span>المقارنة السابقة</span>
+                  <span>المدى المرجعي</span>
+                  <span>النتيجة</span>
+                  <span>الجهاز</span>
+                  <span>TEST</span>
+                </div>
+                {[
+                  ["Normal", "92", "70 - 100", "5", "Cobas 6000", "Glucose (Fasting)", "green"],
+                  ["Critical High", "> 8.1", "4.0 - 5.6", "5", "BioRad D-10", "HbA1c", "red"],
+                  ["High", "198", "< 200", "5", "Cobas 6000", "Total Cholesterol", "orange"],
+                ].map((row) => (
+                  <div
+                    key={row[5]}
+                    className={`grid grid-cols-[0.9fr_0.8fr_0.8fr_0.9fr_0.85fr_1.15fr] gap-4 px-6 py-5 text-sm ${
+                      row[6] === "red" ? "bg-[#fff5f3]" : "hover:bg-muted/50"
+                    }`}
+                  >
+                    <StatusPill tone={row[6] as "green" | "red" | "orange"}>{row[0]}</StatusPill>
+                    <span className="font-mono">{row[1]}</span>
+                    <span className="font-mono">{row[2]}</span>
+                    <span className="font-mono text-xl font-extrabold text-foreground">{row[3]}</span>
+                    <span>{row[4]}</span>
+                    <span className="font-semibold">{row[5]}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid gap-5 lg:grid-cols-[0.6fr_1fr]">
+                <Card className="bg-[#f2fbf9]">
+                  <CardContent className="space-y-3 p-5">
+                    <h3 className="text-lg font-extrabold text-primary">تحليل الدلتا</h3>
+                    <p className="text-sm leading-7 text-slate-600">
+                      تم رصد ارتفاع في HbA1c بنسبة 54% مقارنة بآخر تقرير معتمد.
+                    </p>
+                    <div className="rounded-2xl bg-white px-4 py-3 text-sm font-bold text-emerald-700">
+                      OK 100% الأجهزة مفعلة
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="space-y-3 p-5">
+                    <h3 className="text-lg font-extrabold">ملاحظات فنية</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {["Repeated", "Hemolyzed", "Lipemic", "Dilution 1:10"].map((tag) => (
+                        <span key={tag} className="rounded-full bg-muted px-3 py-2 text-xs font-bold text-slate-600">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    <textarea
+                      className="ghost-outline min-h-24 w-full rounded-[20px] bg-card p-4 text-sm outline-none focus-visible:ring-4 focus-visible:ring-ring/70"
+                      placeholder="أضف ملاحظات فنية إضافية..."
+                    />
+                  </CardContent>
+                </Card>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="space-y-5">
+          <Card>
+            <CardContent className="space-y-4 p-5">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-extrabold">قائمة المهام</h2>
+                <StatusPill tone="blue">STAT</StatusPill>
+              </div>
+              {[
+                { id: "#2026-00451", name: "أحمد محمود حسين", panel: "Chemistry Panel", active: true },
+                { id: "#2026-00452", name: "ليلى عبدالرحمن القحطاني", panel: "Lipid Profile + TSH", active: false },
+                { id: "#2026-00453", name: "محمد علي الصالح", panel: "Thyroid Profile", active: false },
+              ].map((item) => (
+                <div
+                  key={item.id}
+                  className={`rounded-[24px] border px-4 py-4 ${item.active ? "border-primary bg-[#f3fbf9]" : "border-transparent bg-muted/50"}`}
+                >
+                  <p className="font-mono text-xs text-slate-400">{item.id}</p>
+                  <p className="mt-1 text-lg font-extrabold">{item.name}</p>
+                  <p className="text-sm text-muted-foreground">{item.panel}</p>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+          <Button className="h-14 w-full">طلب جديد</Button>
+        </div>
+      </div>
+    </AppFrame>
+  );
+}
+
+function ResultsApprovalScreen() {
+  return (
+    <AppFrame brand="Clinical Nexus" profile="د. أحمد منصور" sideTitle="اعتماد النتائج">
+      <div className="grid gap-6 xl:grid-cols-[1.1fr_0.72fr]">
+        <div className="space-y-5">
+          <Card>
+            <CardContent className="space-y-6 p-8">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <h1 className="text-4xl font-extrabold">اعتماد النتائج الطبية</h1>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    مراجعة نهائية قبل التوقيع وإصدار التقرير
+                  </p>
+                </div>
+                <div className="flex gap-3">
+                  <StatusPill tone="red">STAT 4</StatusPill>
+                  <StatusPill tone="green">Pending 12</StatusPill>
+                </div>
+              </div>
+
+              <div className="rounded-[28px] bg-muted/60 p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-3xl font-extrabold">سارة محمود العبادي</h2>
+                    <p className="mt-2 font-mono text-sm text-slate-500">LAB-2026-00124</p>
+                  </div>
+                  <div className="flex size-16 items-center justify-center rounded-2xl bg-accent text-primary">
+                    <User className="size-7" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="overflow-hidden rounded-[28px] bg-white">
+                <div className="grid grid-cols-[0.8fr_0.75fr_0.8fr_0.75fr_0.9fr_1.1fr] gap-4 border-b border-border/60 px-6 py-4 text-sm font-bold text-slate-500">
+                  <span>QC Status</span>
+                  <span>Delta</span>
+                  <span>Reference</span>
+                  <span>Result</span>
+                  <span>Flag</span>
+                  <span>Test</span>
+                </div>
+                {[
+                  ["Verified", "12.1", "12.0 - 15.5", "12.4 g/dL", "--", "Hemoglobin (HGB)", "green"],
+                  ["Verified", "2.4", "14.0 >", "42.8 ng/L", "High", "Troponin I", "red"],
+                  ["Verified", "156", "70 - 140", "148 mg/dL", "Up", "Glucose (Random)", "orange"],
+                ].map((row) => (
+                  <div key={row[5]} className={`grid grid-cols-[0.8fr_0.75fr_0.8fr_0.75fr_0.9fr_1.1fr] gap-4 px-6 py-5 text-sm ${row[6] === "red" ? "bg-[#fff5f3]" : "hover:bg-muted/50"}`}>
+                    <StatusPill tone={row[6] === "green" ? "green" : "blue"}>{row[0]}</StatusPill>
+                    <span className="font-mono">{row[1]}</span>
+                    <span className="font-mono">{row[2]}</span>
+                    <span className="font-mono text-xl font-extrabold">{row[3]}</span>
+                    <span>{row[4]}</span>
+                    <span className="font-semibold">{row[5]}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid gap-5 md:grid-cols-2">
+                <Card>
+                  <CardContent className="space-y-3 p-5">
+                    <h3 className="text-lg font-extrabold">إضافة تفسير سريري</h3>
+                    <textarea className="ghost-outline min-h-28 w-full rounded-[22px] bg-card p-4 text-sm outline-none focus-visible:ring-4 focus-visible:ring-ring/70" placeholder="أدخل الرأي الطبي أو correlation..." />
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="space-y-3 p-5">
+                    <h3 className="text-lg font-extrabold">Technical Comments</h3>
+                    <p className="text-sm leading-7 text-slate-600">
+                      Sample was slightly hemolyzed. Repeated test confirmed high troponin value.
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <div className="flex flex-wrap gap-4">
+                <Button className="min-w-52">Approve and Sign Results</Button>
+                <Button variant="secondary" className="min-w-44">
+                  Reject / Return to Lab
+                </Button>
+                <span className="self-center text-sm font-semibold text-destructive">
+                  Critical value alert triggered. Clinical correlation required.
+                </span>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="space-y-5">
+          <Card>
+            <CardContent className="space-y-4 p-5">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-extrabold">Queue List</h2>
+                <span className="text-sm text-muted-foreground">Sort by time</span>
+              </div>
+              {[
+                { id: "LAB-2026-00124", name: "سارة محمود العبادي", dept: "Cardiology", active: true },
+                { id: "LAB-2026-00125", name: "ياسين إبراهيم الخليل", dept: "Endocrine", active: false },
+                { id: "LAB-2026-00128", name: "فاطمة ناصر الزهراني", dept: "OBGYN", active: false },
+              ].map((item) => (
+                <div key={item.id} className={`rounded-[24px] px-4 py-4 ${item.active ? "border border-primary bg-[#f3fbf9]" : "bg-muted/50"}`}>
+                  <p className="font-mono text-xs text-slate-400">{item.id}</p>
+                  <p className="mt-1 text-lg font-extrabold">{item.name}</p>
+                  <p className="text-sm text-muted-foreground">{item.dept}</p>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </AppFrame>
+  );
+}
+
+function ClinicalCollaborationScreen() {
+  return (
+    <AppFrame brand="Clinical Curator LIMS" profile="Core Laboratory" sideTitle="التعاون السريري">
+      <div className="grid gap-6 xl:grid-cols-[0.44fr_1fr_0.46fr]">
+        <div className="space-y-5">
+          <Card>
+            <CardContent className="space-y-4 p-5">
+              <div className="flex items-center justify-between">
+                <StatusPill tone="orange">ACTIVE CONSULTATION</StatusPill>
+                <span className="font-mono text-xs text-slate-400">#REF-2023-9942</span>
+              </div>
+              <div>
+                <h2 className="text-2xl font-extrabold">Case Study: Mixed Cell Adenocarcinoma</h2>
+                <p className="mt-2 text-sm text-muted-foreground">Patient: J. Doe | Age: 54 | Priority: High</p>
+              </div>
+              <div className="space-y-3">
+                <FileRow title="Initial Lab Findings" subtitle="Uploaded 2h ago" />
+                <FileRow title="Clinical History.pdf" subtitle="Radiology Reports included" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="space-y-4 p-5">
+              <h3 className="text-lg font-extrabold">Consensus Voting</h3>
+              <VoteBar label="Benign - Suspicious" value={75} />
+              <VoteBar label="Malignant (Stage 1)" value={25} tone="amber" />
+              <Button variant="secondary" className="w-full">
+                Cast Your Opinion
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card>
+          <CardContent className="space-y-4 p-5">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-bold">Slide Viewer: H&E Stain</p>
+                <span className="mt-1 inline-flex rounded-full bg-accent px-2 py-1 text-xs font-bold text-primary">
+                  40x Zoom
+                </span>
+              </div>
+              <div className="flex gap-2 text-slate-500">
+                <ActionIcon icon={<Search className="size-4" />} />
+                <ActionIcon icon={<SlidersHorizontal className="size-4" />} />
+              </div>
+            </div>
+            <div className="relative min-h-[640px] rounded-[28px] bg-[radial-gradient(circle_at_center,#f2f5d6,#d7e6c5_46%,#e9f2e2)] p-6">
+              <div className="absolute left-1/2 top-1/2 h-[72%] w-[46%] -translate-x-1/2 -translate-y-1/2 rounded-[36px] border-2 border-[#7e7d65] bg-[radial-gradient(circle_at_40%_35%,#a82bc4_0,#8c2aaa_20%,#e6c3d9_22%,#f0dccb_28%,#ab37af_34%,#a34eb5_42%,#c1bfd4_52%,#fff0de_74%,#d7e1be_100%)] shadow-inner" />
+              <div className="absolute left-[43%] top-[31%] rounded-xl bg-rose-600 px-3 py-2 text-xs font-bold text-white ambient-shadow">
+                Suspected Mitosis
+              </div>
+              <div className="absolute bottom-6 left-6 right-6 grid gap-3 md:grid-cols-3">
+                <AnnotationCard title="Dr. Aris Thorne" text="Cluster of atypical cells noted here." />
+                <AnnotationCard title="System AI" text="High density cellular region identified." />
+                <AnnotationCard title="Clear All" text="Live Annotations (3)" reverse />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="space-y-4 p-5">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-extrabold">Case Discussion</h2>
+              <Button variant="secondary" size="sm">Export Case</Button>
+            </div>
+            <ChatBubble author="Dr. Sarah Chen" text="راجعت صور الأشعة، وتبدو الكتلة أكبر قليلًا من المتوقع." />
+            <ChatBubble author="You (Pathologist)" text="يبدو أن هناك تمددًا نسيجيًا أثناء التثبيت. أركز على الدرجة النووية في المقطع 4B." mine />
+            <ChatBubble author="Dr. Marcus Vance" text="هل تُظهر صبغة المناعة أي مؤشرات نوعية لهذا المتغير الخلوي؟" />
+            <div className="rounded-2xl bg-muted/60 px-4 py-3 text-sm font-semibold text-slate-600">
+              IHC_Panel_Results.csv shared by Dr. Sarah Chen
+            </div>
+            <div className="flex items-center gap-3 rounded-2xl bg-muted/60 p-3">
+              <Input placeholder="Type a message..." className="border-0 bg-transparent shadow-none" />
+              <Button size="icon">
+                <MessageSquare className="size-4" />
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </AppFrame>
+  );
+}
+
+function AiDiagnosticHubScreen() {
+  return (
+    <AppFrame brand="Precision LIMS" profile="Dr. Ahmed Khalil" sideTitle="AI Diagnostics">
+      <div className="grid gap-6 xl:grid-cols-[1fr_0.42fr]">
+        <div className="space-y-5">
+          <div className="grid gap-5 lg:grid-cols-2">
+            <ImagePanel label="AI AUGMENTED LAYER" variant="left" />
+            <ImagePanel label="ORIGINAL SPECIMEN" variant="right" />
+          </div>
+
+          <Card className="bg-[#1f2427] text-white">
+            <CardContent className="flex items-center justify-between gap-4 p-4">
+              <div className="flex gap-3">
+                <Button>Export Analysis</Button>
+                <Button variant="secondary">Magnification: 40x</Button>
+              </div>
+              <div className="flex gap-2">
+                {Array.from({ length: 4 }).map((_, index) => (
+                  <div key={index} className="h-12 w-16 rounded-xl bg-white/10" />
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="space-y-5">
+          <Card>
+            <CardContent className="space-y-5 p-6">
+              <div>
+                <h1 className="text-3xl font-extrabold text-primary">AI Diagnostics</h1>
+                <p className="mt-1 font-mono text-sm text-slate-500">Case: LAB-2026-AI-882</p>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <MetricTile title="Anomalies" value="12" danger />
+                <MetricTile title="AI Confidence" value="94.2%" />
+              </div>
+              <div className="rounded-[24px] bg-muted/60 p-5">
+                <h3 className="text-lg font-extrabold">Visualization Filters</h3>
+                <div className="mt-4 space-y-5">
+                  <SliderRow label="Confidence Threshold" value={85} />
+                  <SliderRow label="Heatmap Opacity" value={60} />
+                </div>
+              </div>
+              <div className="space-y-3">
+                <FeatureBox
+                  title="High Risk"
+                  badge="AI Prediction"
+                  text="Cellular pleomorphism detected in Cluster 4A. Abnormal nuclei detected."
+                />
+                <FeatureBox
+                  title="Dr. Khalil"
+                  badge="Confirmed"
+                  text="Morphological changes consistent with Grade II neoplasia."
+                  subtle
+                />
+              </div>
+            </CardContent>
+          </Card>
+          <Button className="h-14 w-full">Finalize Diagnostic Report</Button>
+        </div>
+      </div>
+    </AppFrame>
+  );
+}
+
 function AppFrame({
   children,
   brand,
@@ -731,6 +1150,149 @@ function AppFrame({
           </CardContent>
         </Card>
       </aside>
+    </div>
+  );
+}
+
+function FileRow({ title, subtitle }: { title: string; subtitle: string }) {
+  return (
+    <div className="flex items-center justify-between rounded-2xl bg-muted/60 px-4 py-3">
+      <div>
+        <p className="font-bold text-foreground">{title}</p>
+        <p className="text-xs text-muted-foreground">{subtitle}</p>
+      </div>
+      <FileText className="size-4 text-primary" />
+    </div>
+  );
+}
+
+function VoteBar({
+  label,
+  value,
+  tone = "teal",
+}: {
+  label: string;
+  value: number;
+  tone?: "teal" | "amber";
+}) {
+  return (
+    <div className="rounded-2xl bg-muted/60 p-4">
+      <div className="mb-2 flex items-center justify-between text-sm font-bold">
+        <span>{label}</span>
+        <span className="font-mono">{value}%</span>
+      </div>
+      <div className="h-2 overflow-hidden rounded-full bg-white">
+        <div
+          className={`h-full rounded-full ${tone === "amber" ? "bg-amber-500" : "bg-primary"}`}
+          style={{ width: `${value}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function AnnotationCard({
+  title,
+  text,
+  reverse,
+}: {
+  title: string;
+  text: string;
+  reverse?: boolean;
+}) {
+  return (
+    <div className={`rounded-2xl p-4 ${reverse ? "bg-white/90" : "bg-[#f8faf7]/92"}`}>
+      <p className="text-xs font-bold text-primary">{title}</p>
+      <p className="mt-2 text-sm leading-6 text-slate-600">{text}</p>
+    </div>
+  );
+}
+
+function ChatBubble({
+  author,
+  text,
+  mine,
+}: {
+  author: string;
+  text: string;
+  mine?: boolean;
+}) {
+  return (
+    <div className={`rounded-[24px] p-4 ${mine ? "bg-primary text-white" : "bg-muted/60 text-slate-700"}`}>
+      <p className={`text-xs font-bold ${mine ? "text-white/80" : "text-slate-500"}`}>{author}</p>
+      <p className="mt-2 text-sm leading-7">{text}</p>
+    </div>
+  );
+}
+
+function ImagePanel({
+  label,
+  variant,
+}: {
+  label: string;
+  variant: "left" | "right";
+}) {
+  return (
+    <Card className="overflow-hidden bg-[#121617] text-white">
+      <CardContent className="p-4">
+        <div className="mb-4 inline-flex rounded-full bg-[#183a38] px-3 py-1 text-xs font-bold text-teal-200">
+          {label}
+        </div>
+        <div
+          className={`relative min-h-[610px] rounded-[28px] ${
+            variant === "left"
+              ? "bg-[radial-gradient(circle_at_40%_45%,#ecead2_0,#f7f5df_21%,#8c2db0_22%,#76218f_38%,#f6f4e2_40%,#f8f7eb_58%,#6b1f7b_60%,#36154a_100%)]"
+              : "bg-[radial-gradient(circle_at_50%_50%,#a12aa8_0,#f7dec3_19%,#c3bfd5_23%,#f4d2b8_29%,#932ea2_36%,#f5eed8_40%,#cad0d8_48%,#f0d7bd_62%,#231730_100%)]"
+          }`}
+        >
+          {variant === "left" ? (
+            <div className="absolute left-[38%] top-[42%] rounded-xl bg-[#ffe5ea] px-3 py-2 text-xs font-bold text-rose-600 ambient-shadow">
+              Anomalous Cluster 04
+            </div>
+          ) : null}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function SliderRow({ label, value }: { label: string; value: number }) {
+  return (
+    <div>
+      <div className="mb-2 flex items-center justify-between text-sm font-bold">
+        <span className="font-mono text-slate-500">{value}%</span>
+        <span>{label}</span>
+      </div>
+      <div className="h-2 overflow-hidden rounded-full bg-white">
+        <div className="relative h-full rounded-full bg-primary/25">
+          <div className="absolute right-[30%] top-1/2 size-4 -translate-y-1/2 rounded-full bg-primary" />
+          <div className="h-full rounded-full bg-primary/40" style={{ width: `${value}%` }} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FeatureBox({
+  title,
+  badge,
+  text,
+  subtle,
+}: {
+  title: string;
+  badge: string;
+  text: string;
+  subtle?: boolean;
+}) {
+  return (
+    <div className={`rounded-[24px] p-4 ${subtle ? "bg-muted/60" : "bg-[#e7f3f1]"}`}>
+      <div className="flex items-center justify-between">
+        <span className={`rounded-full px-3 py-1 text-xs font-bold ${subtle ? "bg-white text-primary" : "bg-primary text-white"}`}>
+          {badge}
+        </span>
+        <span className="font-bold text-primary">{title}</span>
+      </div>
+      <p className="mt-3 text-sm leading-7 text-slate-600">{text}</p>
     </div>
   );
 }
